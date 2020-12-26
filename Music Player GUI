@@ -1,0 +1,60 @@
+import pygame
+import tkinter as tk
+from tkinter.filedialog import askdirectory
+import os
+
+
+music_player = tk.Tk()
+
+music_player.title("Music Player")
+
+#setting directory
+directory = askdirectory()
+
+os.chdir(directory)
+
+#setting song list
+songlist = os.listdir()
+
+playlist = tk.Listbox(music_player, font = "Arial 6 bold", bg="cyan2", selectmode = tk.SINGLE)
+
+
+for song in songlist:
+	pos = 0
+	playlist.insert(pos, song)
+	pos=pos+1
+	
+pygame.init()
+pygame.mixer.init()
+
+def play_song():
+	pygame.mixer.music.load(playlist.get(tk.ACTIVE))
+	var.set(playlist.get(tk.ACTIVE))
+	pygame.mixer.music.play()
+
+def stop_song():
+	pygame.mixer.music.stop()
+	
+def pause_song():
+	pygame.mixer.music.pause()
+	
+def resume_song():
+	pygame.mixer.music.unpause()
+	
+var = tk.StringVar()
+
+song_title = tk.Label(music_player, textvariable=var).pack()
+	
+stop_btn=tk.Button(music_player, bg="red", text="STOP", fg="black", command=stop_song).pack(fill="x")
+
+play_btn=tk.Button(music_player, bg="green", text="PLAY", fg="white", command=play_song).pack(fill="x")
+
+resume_btn=tk.Button(music_player, bg="blue", text="Resume", fg="white", command=resume_song).pack(fill="x")
+
+pause_btn=tk.Button(music_player, bg="yellow", text="Pause", fg="black", command=pause_song).pack(fill="x")
+
+playlist.pack(fill="both", expand="yes")
+
+
+			
+music_player.mainloop()
